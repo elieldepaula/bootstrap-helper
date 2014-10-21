@@ -6,7 +6,7 @@
 | ao invés de HTML puro.
 |
 | Foi desenvolvido para ser usado no FrameWork CodeIgniter em conjunto
-| com o helper HTML.
+| com o helper HTML e URL.
 | 
 | @author Eliel de Paula <elieldepaula@gmail.com>
 | @since 20/10/2014
@@ -38,16 +38,20 @@ if ( ! function_exists('_attributes'))
 	/*
 	| Passa os atributos passados em forma de array.
 	*/
-	function _attributes($array)
+	function _attributes($attributes)
 	{
-		if(is_array($array))
+		if(is_array($attributes))
 		{
 			$atr = '';
-			foreach($array as $key => $value)
+			foreach($attributes as $key => $value)
 			{
 				$atr .= $key . "=\"".$value."\" ";
 			}
 			return $atr;
+		} 
+		elseif (is_string($attributes) and strlen($attributes) > 0) 
+		{
+			$atr = ' ' . $attributes;
 		}
 	}
 }
@@ -181,7 +185,7 @@ if ( ! function_exists('glyphicon'))
 	}
 }
 
-if ( ! function_exists('breadcrumb'))
+if ( ! function_exists('bread_crumb'))
 {
 	/*
 	| Gera um navegador estilo breadcrumb.
@@ -194,17 +198,19 @@ if ( ! function_exists('breadcrumb'))
 	| )
 	|
 	*/
-	function breadcrumb($itens)
+	function bread_crumb($itens)
 	{
 		$str = "";
 		$str .= "<ol class=\"breadcrumb\">\n";
 
-		foreach($itens as $key => $item)
+		foreach($itens as $item)
 		{
-			if($item['url']){
-				$str .= "<li>".anchor($item['url'], $item['caption'])."</li>\n";
+
+			if($item['url'] == '')
+			{
+				$str .= "    <li class=\"active\">".$item['caption']."</li>\n";
 			} else {
-				$str .= "<li class=\"active\">".$item['caption']."</li>\n";
+				$str .= "    <li>".anchor($item['url'], $item['caption'])."</li>\n";
 			}
 		}
 
@@ -212,6 +218,71 @@ if ( ! function_exists('breadcrumb'))
 
 		return $str;
 
-		// return print_r($itens);
+	}
+}
+
+if ( ! function_exists('labels'))
+{
+
+	/*
+	| Gera um texto de label.
+	*/
+	function labels($text, $style = 'default')
+	{
+		return "<span class=\"label label-".$style."\">".$text."</span>\n";
+	}
+}
+
+if ( ! function_exists('badge'))
+{
+
+	/*
+	| Gera um texto de badge.
+	*/
+	function badge($text)
+	{
+		return "<span class=\"badge\">".$text."</span>\n";
+	}
+}
+
+if ( ! function_exists('page_header'))
+{
+
+	/*
+	| Gera um page-header.
+	*/
+	function page_header($title, $size = 'h1', $subtitle = '')
+	{
+		$str = "";
+		$str .= "<div class=\"page-header\">\n";
+		$str .= "    <h".$size.">".$title." <small>".$subtitle."</small></h".$size.">\n";
+		$str .= "</div>\n";
+
+		return $str;
+	}
+}
+
+if ( ! function_exists('alerts'))
+{
+
+	/*
+	| Gera um page-header.
+	*/
+	function alerts($message, $style = 'info', $dismissible = FALSE)
+	{
+		$demiss = "";
+		
+		if($dismissible)
+		{
+			$demiss = " alert-dismissible";
+		} 
+
+		$str = "";
+		$str .= "<div class=\"alert alert-".$style." ".$demiss."\" role=\"alert\">\n";
+		$str .= "    <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>";
+		$str .= "    ".$message."\n";
+		$str .= "</div>\n";
+
+		return $str;
 	}
 }
