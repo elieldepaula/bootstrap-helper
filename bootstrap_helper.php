@@ -1,5 +1,18 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/*
+|--------------------------------------------------------------------------
+| Este helper gera os elementos do bootstrap 3 usando PHP
+| ao invés de HTML puro.
+|
+| Foi desenvolvido para ser usado no FrameWork CodeIgniter em conjunto
+| com o helper HTML.
+| 
+| @author Eliel de Paula <elieldepaula@gmail.com>
+| @since 20/10/2014
+|--------------------------------------------------------------------------
+*/
+
 if ( ! function_exists('load_bootsrap'))
 {
 	/*
@@ -16,6 +29,26 @@ if ( ! function_exists('load_bootsrap'))
 
 		return link_tag($link)."\n";
 
+	}
+}
+
+if ( ! function_exists('_attributes'))
+{
+
+	/*
+	| Passa os atributos passados em forma de array.
+	*/
+	function _attributes($array)
+	{
+		if(is_array($array))
+		{
+			$atr = '';
+			foreach($array as $key => $value)
+			{
+				$atr .= $key . "=\"".$value."\" ";
+			}
+			return $atr;
+		}
 	}
 }
 
@@ -84,12 +117,11 @@ if ( ! function_exists('smalltext'))
 		return $str;
 	}
 }
-//<button type="button" class="btn btn-default">Default</button>
 
 if ( ! function_exists('button'))
 {
 	/*
-	| Gera um texto <small>
+	| Gera um botão
 	*/
 	function button($caption, $attributes = array())
 	{
@@ -99,22 +131,87 @@ if ( ! function_exists('button'))
 	}
 }
 
-if ( ! function_exists('_attributes'))
+if ( ! function_exists('context_color'))
+{
+	/*
+	| Gera um parágrafo com as cores padrões do bootstrap.
+	*/
+	function context_color($text, $tag = 'p', $style = 'primary')
+	{
+		$str = "";
+		$str = "<".$tag." class=\"text-".$style."\">".$text."</".$tag.">\n";
+		return $str;
+	}
+}
+
+if ( ! function_exists('context_bg'))
+{
+	/*
+	| Gera um parágrafo com as cores de fundo padrões do bootstrap.
+	*/
+	function context_bg($text, $tag = 'p', $style = 'primary')
+	{
+		$str = "";
+		$str = "<".$tag." class=\"bg-".$style."\">".$text."</".$tag.">\n";
+		return $str;
+	}
+}
+
+if ( ! function_exists('clearfix'))
 {
 
 	/*
-	| Passa os atributos passados em forma de array.
+	| Clearfix.
 	*/
-	function _attributes($array)
+	function clearfix()
 	{
-		if(is_array($array))
+		return "<div class=\"clearfix\"></div>\n";
+	}
+}
+
+if ( ! function_exists('glyphicon'))
+{
+
+	/*
+	| Gera um ícone.
+	*/
+	function glyphicon($icon = 'star')
+	{
+		return "<span class=\"glyphicon glyphicon-".$icon."\"></span>\n";
+	}
+}
+
+if ( ! function_exists('breadcrumb'))
+{
+	/*
+	| Gera um navegador estilo breadcrumb.
+	| Os itens devem ser um array:
+	|
+	| array(
+	|    array('link'=>'seu/link', 'caption'=>'Seu texto'),
+	|    array('link'=>'seu/link', 'caption'=>'Seu texto'),
+	|    array('caption'=>'Seu texto')
+	| )
+	|
+	*/
+	function breadcrumb($itens)
+	{
+		$str = "";
+		$str .= "<ol class=\"breadcrumb\">\n";
+
+		foreach($itens as $key => $item)
 		{
-			$atr = '';
-			foreach($array as $key => $value)
-			{
-				$atr .= $key . "=\"".$value."\" ";
+			if($item['url']){
+				$str .= "<li>".anchor($item['url'], $item['caption'])."</li>\n";
+			} else {
+				$str .= "<li class=\"active\">".$item['caption']."</li>\n";
 			}
-			return $atr;
 		}
+
+		$str .= "</ol>\n";
+
+		return $str;
+
+		// return print_r($itens);
 	}
 }
