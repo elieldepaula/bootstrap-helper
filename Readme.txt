@@ -7,7 +7,7 @@ Note:
 
 You must have bootstrap in your project folder fowlling this structure:
 
-/root
+/webroot
   |-application
   |-system
   |-bootstrap
